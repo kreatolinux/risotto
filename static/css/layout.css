@@ -55,6 +55,7 @@
     right: 1rem;
     overflow-y: auto;
     max-height: 95vh;
+    align-self: start;
 }
 
 .page__aside::-webkit-scrollbar {
