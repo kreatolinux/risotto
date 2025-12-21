@@ -5,7 +5,7 @@
         {{- partial "head.html" . -}}
     </head>
 
-    <body>
+    <body{{ if or (eq .Section "package") (eq .Type "package") }} class="package-page"{{ end }}>
         <div class="page">
 
             <header class="page__header">
@@ -17,12 +17,16 @@
             </section>
 
             <section class="page__aside">
-                <div class="aside__about">
-                    {{- partial "about.html" . -}}
-                </div>
-                <hr>
                 <div class="aside__content">
-                    {{- block "aside" . }}{{- end }}
+                    {{- if or (eq .Section "package") (eq .Type "package") }}
+                        {{- block "aside" . }}{{- end }}
+                    {{- else }}
+                        <div class="aside__about">
+                            {{- partial "about.html" . -}}
+                        </div>
+                        <hr>
+                        {{- block "aside" . }}{{- end }}
+                    {{- end }}
                 </div>
             </section>
 

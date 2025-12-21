@@ -1,1 +1,73 @@
 /* Override this file to customise the theme's CSS for your site */
+
+.package-list-container {
+    min-height: 80vh;
+}
+
+.package-list-container .breadcrumb {
+    font-size: 0.9rem;
+    color: var(--off-fg);
+    margin-bottom: 0.5rem;
+}
+
+.package-sidebar__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.package-sidebar__item {
+    margin-bottom: 0.5rem;
+    padding: 0 0.5rem;
+    text-align: left;
+}
+
+.package-sidebar__link {
+    text-decoration: none;
+    color: var(--off-fg);
+    display: block;
+    padding: 0.2rem 0;
+    transition: color 0.2s;
+    font-size: 0.95rem;
+}
+
+.package-sidebar__link:hover {
+    color: var(--fg);
+}
+
+.package-sidebar__item.active {
+    border-right: 2px solid var(--fg);
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    border-left: none;
+}
+
+.package-sidebar__item.active .package-sidebar__link {
+    color: var(--fg);
+}
+
+/* Adjust layout for package pages to have sidebar on the left */
+.package-page .page {
+    grid-template-areas:
+        "header"
+        "aside"
+        "body"
+        "footer";
+}
+
+@media (min-width: 45rem) {
+    .package-page .page {
+        grid-template-areas:
+            "header  header"
+            "aside   body"
+            "footer  footer";
+        grid-template-columns: 15rem minmax(0, 1fr);
+        grid-column-gap: 4rem;
+    }
+
+    .package-page .page__aside {
+        border-right: 1px solid var(--off-bg);
+        padding-right: 2rem;
+    }
+}
+

@@ -1,0 +1,25 @@
+{{ define "main" }}
+    <div class="package-list-container">
+        <header class="content__header">
+            <p class="breadcrumb">{{ .Title }}</p>
+            <h1>{{ .Title | markdownify }}</h1>
+        </header>
+
+        <section class="package-list__content">
+            {{ .Content }}
+        </section>
+    </div>
+{{ end }}
+
+{{ define "aside" }}
+    <div class="package-sidebar">
+        <ul class="package-sidebar__list">
+            {{ $currentPage := . }}
+            {{ range .FirstSection.Pages }}
+            <li class="package-sidebar__item{{ if or (eq $currentPage.Permalink .Permalink) ($currentPage.IsDescendant .) }} active{{ end }}">
+                <a href="{{ .Permalink }}" class="package-sidebar__link">{{ .Title }}</a>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+{{ end }}

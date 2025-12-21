@@ -31,6 +31,9 @@
 <!-- OG meta properties -->
 <meta property="og:title" content="{{ with .Title }}{{ . }} &ndash; {{end}}{{ .Site.Title }}" />
 <meta property="og:url" content="{{ .Page.Permalink }}" />
+
+<!-- search -->
+<script defer src="{{ "js/search.js" | absURL }}"></script>
 {{ if isset .Params "description" }}
   <meta property="og:description" content="{{ with .Params.description }}{{ . }} &ndash; {{end}}"/> 
 {{ else }}

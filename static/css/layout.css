@@ -1,8 +1,9 @@
 /* 1rem = 16px by default */
 
 .page {
-    max-width: 64rem;
+    max-width: 90rem; /* Increased from 64rem */
     margin: 1rem auto;
+    padding: 0 2rem; /* Add padding at the start of the page */
     display: grid;
     grid-template-areas:
       "header"

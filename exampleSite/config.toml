@@ -13,11 +13,18 @@ ignoreErrors = ["error-remote-getjson"]
 # Automatically add content sections to main menu
 sectionPagesMenu = "main"
 
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
 [pagination]
 pagerSize = 3
 
 [params]
 noindex = false
+
+[params.search]
+placeholder = "Search..."
+# truncateContent = 5000
 
 [params.theme]
 palette = "base16-dark"

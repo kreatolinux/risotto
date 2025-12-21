@@ -5,6 +5,11 @@
     {{ range .Site.Menus.main }}
     <li class="main-nav__item"><a class="nav-main-item{{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq ($currentPage.Permalink) (.URL | absLangURL)) }} active{{end}}" href="{{ .URL | absLangURL }}" title="{{ .Title }}">{{ .Name }}</a></li>
     {{ end }}
+    <li class="nomarker search-container">
+      <input type="text" id="search-input" placeholder="{{ .Site.Params.search.placeholder | default "search..." }}">
+      <kbd class="search-kbd"></kbd>
+      <div id="search-results" class="search-results"></div>
+    </li>
     </ul>
 </nav>
 

@@ -1,0 +1,15 @@
+[
+  {{- range $index, $page := .Site.AllPages -}}
+    {{- if $index -}},{{- end -}}
+    {{- $content := $page.Plain -}}
+    {{- if .Site.Params.search.truncateContent -}}
+      {{- $content = substr $content 0 (int .Site.Params.search.truncateContent) -}}
+    {{- end -}}
+    {
+      "title": {{ $page.Title | jsonify }},
+      "permalink": {{ $page.Permalink | jsonify }},
+      "content": {{ $content | jsonify }},
+      "summary": {{ $page.Summary | plainify | jsonify }}
+    }
+  {{- end -}}
+]

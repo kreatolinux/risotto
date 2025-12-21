@@ -1,3 +1,10 @@
 [module]
   [module.hugoVersion]
     min = "0.41.0"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[params.search]
+  placeholder = "Search..."
+  # truncateContent = 5000 # Optional truncation length

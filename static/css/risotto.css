@@ -2,9 +2,11 @@
 @import 'typography.css';
 @import 'layout.css';
 @import 'header.css';
+@import 'search.css';
 @import 'logo.css';
 @import 'about.css';
 @import 'footer.css';
+@import 'custom.css';
 
 body {
     background-color: var(--bg);
