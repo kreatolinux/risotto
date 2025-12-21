@@ -57,6 +57,29 @@
     max-height: 95vh;
 }
 
+.page__aside::-webkit-scrollbar {
+    width: 8px;
+}
+
+.page__aside::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+.page__aside::-webkit-scrollbar-thumb {
+    background: var(--muted);
+    border-radius: 4px;
+}
+
+.page__aside::-webkit-scrollbar-thumb:hover {
+    background: var(--off-fg);
+}
+
+/* For Firefox */
+.page__aside {
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) var(--bg);
+}
+
 /* Footer */
 .page__footer {
     grid-area: footer;
