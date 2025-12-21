@@ -84,4 +84,7 @@
 /* Footer */
 .page__footer {
     grid-area: footer;
+    background-color: var(--bg);
+    position: relative;
+    z-index: 10;
 }
