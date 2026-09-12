@@ -2,9 +2,9 @@
 <link rel="stylesheet" href="{{ "css/kongue.css" | absURL }}">
 <script>
   window.KONGUE = {
-    bundle: {{ "js/kongue.js" | absURL | jsonify | safeHTML }},
-    glue:   {{ "js/kongue_glue.js" | absURL | jsonify | safeHTML }},
-    worker: {{ "js/kongue_worker.js" | absURL | jsonify | safeHTML }},
+    bundle: "{{ "js/kongue.js" | absURL }}",
+    glue:   "{{ "js/kongue_glue.js" | absURL }}",
+    worker: "{{ "js/kongue_worker.js" | absURL }}",
     timeout: 2000
   };
 </script>
