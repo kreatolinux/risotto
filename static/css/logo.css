@@ -11,9 +11,16 @@
 
 .page__logo-inner {
     display: block;
+    padding: 0.25rem;
     background: var(--logo);
     opacity: 0.90;
-    padding: 0.25rem;
+}
+
+.page__logo-image {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
 }
 
 a.page__logo-inner:link, a.page__logo-inner:visited {
@@ -21,17 +28,7 @@ a.page__logo-inner:link, a.page__logo-inner:visited {
     text-decoration: inherit;
 }
 
-a.page__logo-inner:hover,
-a.page__logo-inner:active {
+.page__logo-inner:hover,
+.page__logo-inner:active {
     opacity: 1;
-}
-
-.page__logo-inner:before {
-    content: "[";
-    color: var(--bg);
-}
-
-.page__logo-inner:after {
-    content: "] $";
-    color: var(--bg);
 }

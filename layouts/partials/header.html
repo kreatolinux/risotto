@@ -1,6 +1,13 @@
 <nav class="page__nav main-nav">
     <ul>
-      <li class="nomarker"><h1 class="page__logo"><a href="{{ .Site.BaseURL }}" class="page__logo-inner">{{ .Site.Title }}</a></h1></li>
+      {{ $site := .Site }}
+    <li class="nomarker"><h1 class="page__logo"><a href="{{ $site.BaseURL }}" class="page__logo-inner" aria-label="{{ $site.Title }}">
+      {{ with $site.Params.logo }}
+        <img class="page__logo-image" src="{{ . | absURL }}" alt="{{ $site.Title }}">
+      {{ else }}
+        {{ $site.Title }}
+      {{ end }}
+    </a></h1></li>
     {{ $currentPage := . }}
     {{ range .Site.Menus.main }}
     <li class="main-nav__item"><a class="nav-main-item{{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) (eq ($currentPage.Permalink) (.URL | absLangURL)) }} active{{end}}" href="{{ .URL | absLangURL }}" title="{{ .Title }}">{{ .Name }}</a></li>
