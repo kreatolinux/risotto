@@ -104,5 +104,5 @@
 .k-kw  { color: var(--link); font-weight: 600; }
 .k-str { color: var(--highlight); }
 .k-var { color: var(--logo); }
-.k-com { color: var(--muted); font-style: italic; }
+.k-com { color: var(--off-fg); font-style: italic; }
 .k-num { color: var(--hover); }
