@@ -18,8 +18,9 @@
 
 .page__logo-image {
     display: block;
-    width: 2rem;
-    height: 2rem;
+    width: 10rem;
+    height: auto;
+    max-height: 3rem;
     object-fit: contain;
 }
 
