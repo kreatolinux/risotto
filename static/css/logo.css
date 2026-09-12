@@ -11,8 +11,8 @@
 
 .page__logo-inner {
     display: block;
-    padding: 0.25rem;
-    background: var(--logo);
+    padding: 0;
+    background: transparent;
     opacity: 0.90;
 }
 
