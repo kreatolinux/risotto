@@ -78,6 +78,10 @@
     status.className = 'kongue-cell__status' + (r.ok ? '' : ' kongue-cell__status--err');
   }
 
+  function errorText(err) {
+    return String((err && (err.message || err.name)) || err || 'unknown error');
+  }
+
   function runCell(cell) {
     var runBtn = cell.querySelector('.kongue-cell__run');
     var out = cell.querySelector('.kongue-cell__out');
@@ -97,7 +101,17 @@
     out.className = 'kongue-cell__out';
     out.textContent = '';
 
-    var w = new Worker(CFG.worker);
+    var w;
+    try {
+      w = new Worker(CFG.worker);
+    } catch (err) {
+      runBtn.disabled = false;
+      out.className = 'kongue-cell__out kongue-cell__out--err';
+      out.textContent = 'Could not start the Kongue worker: ' + errorText(err);
+      status.textContent = 'error';
+      status.className = 'kongue-cell__status kongue-cell__status--err';
+      return;
+    }
     var settled = false;
 
     var timer = setTimeout(function () {
@@ -127,7 +141,20 @@
       w.terminate();
       runBtn.disabled = false;
       out.className = 'kongue-cell__out kongue-cell__out--err';
-      out.textContent = 'Runner error: ' + ((e && e.message) || 'unknown');
+      out.textContent = 'Runner error: ' + errorText(e) +
+        ' [' + CFG.worker + ']';
+      status.textContent = 'error';
+      status.className = 'kongue-cell__status kongue-cell__status--err';
+    };
+
+    w.onmessageerror = function () {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      w.terminate();
+      runBtn.disabled = false;
+      out.className = 'kongue-cell__out kongue-cell__out--err';
+      out.textContent = 'Runner returned an unreadable result.';
       status.textContent = 'error';
       status.className = 'kongue-cell__status kongue-cell__status--err';
     };
@@ -169,7 +196,7 @@
     for (var i = 0; i < cells.length; i++) {
       (function (cell) {
         var code = cell.querySelector('.kongue-cell__code');
-        // Replace Hugo's generic highlighting with Kongue-specific colours.
+        // Add Kongue-specific colours to the plain theme code block.
         if (code) code.innerHTML = highlight(code.textContent);
 
         var runBtn = cell.querySelector('.kongue-cell__run');

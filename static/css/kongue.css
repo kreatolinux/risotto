@@ -1,73 +1,108 @@
-/* Runnable Kongue code cells */
+/* Runnable Kongue code cells. Colors come from risotto's semantic theme variables. */
 .kongue-cell {
-  margin: 1.25rem 0;
-  border: 1px solid var(--base02);
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--base00);
+  margin: 0 0 1.5rem;
+  border: 1px solid var(--inner-bg);
+  background: var(--inner-bg);
 }
+
 .kongue-cell__bar {
   display: flex;
   align-items: center;
-  gap: .5rem;
-  padding: .35rem .6rem;
-  background: var(--base01);
-  border-bottom: 1px solid var(--base02);
-  font-size: .8rem;
+  gap: .75rem;
+  min-height: 2.25rem;
+  padding: 0 .75rem;
+  background: var(--off-bg);
+  border-bottom: 1px solid var(--inner-bg);
+  color: var(--off-fg);
+  font-size: .875rem;
 }
+
 .kongue-cell__tag {
-  color: var(--base04);
-  letter-spacing: .05em;
-  text-transform: uppercase;
   margin-right: auto;
+  color: var(--muted);
 }
-.kongue-cell__run, .kongue-cell__edit {
+
+.kongue-cell__run,
+.kongue-cell__edit {
+  padding: .15rem .6rem;
+  border: 1px solid var(--muted);
+  border-radius: 0;
+  background: var(--inner-bg);
+  color: var(--fg);
   font: inherit;
   cursor: pointer;
-  padding: .2rem .7rem;
-  border-radius: 4px;
-  border: 1px solid var(--base03);
-  background: var(--base02);
-  color: var(--base05);
 }
-.kongue-cell__run:hover, .kongue-cell__edit:hover {
-  border-color: var(--base0D);
-  color: var(--base0D);
+
+.kongue-cell__run:hover,
+.kongue-cell__edit:hover {
+  background: var(--highlight);
+  border-color: var(--highlight);
+  color: var(--bg);
 }
-.kongue-cell__run:disabled { cursor: default; opacity: .5; }
-.kongue-cell__status { color: var(--base04); }
+
+.kongue-cell__run:disabled {
+  cursor: default;
+  opacity: .5;
+}
+
+.kongue-cell__status { color: var(--muted); }
 .kongue-cell__status--err { color: var(--base08); }
-.kongue-cell__code, .kongue-cell__input, .kongue-cell__out {
+
+.kongue-cell__code,
+.kongue-cell__input,
+.kongue-cell__out {
+  box-sizing: border-box;
+  width: 100%;
   margin: 0;
-  padding: .7rem .8rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: .85rem;
-  line-height: 1.5;
+  padding: 1rem;
   overflow-x: auto;
+  font-family: var(--font-monospace);
+  font-size: .9rem;
+  line-height: 1.5;
 }
-.kongue-cell__code .highlight { margin: 0; }
-.kongue-cell__code pre { margin: 0; background: transparent !important; }
+
+.kongue-cell__code {
+  min-height: 3rem;
+  background: var(--inner-bg) !important;
+  color: var(--off-fg) !important;
+}
+
+.kongue-cell__code code {
+  background: transparent !important;
+  color: inherit !important;
+}
+
 .kongue-cell__input {
   display: block;
-  width: 100%;
-  box-sizing: border-box;
+  min-height: 8rem;
   resize: vertical;
   border: 0;
-  border-top: 1px solid var(--base02);
-  background: var(--base01);
-  color: var(--base05);
+  border-top: 1px solid var(--muted);
+  border-radius: 0;
   outline: none;
+  background: var(--off-bg) !important;
+  color: var(--fg) !important;
 }
+
+/* The HTML hidden attribute must win over the editor's display rule. */
+.kongue-cell__input[hidden],
+.kongue-cell__out[hidden] {
+  display: none;
+}
+
 .kongue-cell__out {
-  border-top: 1px solid var(--base02);
-  background: var(--base01);
-  color: var(--base0B);
+  border-top: 1px solid var(--muted);
+  background: var(--off-bg) !important;
+  color: var(--off-fg) !important;
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
-.kongue-cell__out--err { color: var(--base08); }
-.k-kw  { color: var(--base0E); font-weight: 600; }
-.k-str { color: var(--base0A); }
-.k-var { color: var(--base0C); }
-.k-com { color: var(--base03); font-style: italic; }
-.k-num { color: var(--base09); }
+
+.kongue-cell__out--err { color: var(--base08) !important; }
+
+/* Kongue token colours, using the same palette as the rest of risotto. */
+.k-kw  { color: var(--link); font-weight: 600; }
+.k-str { color: var(--highlight); }
+.k-var { color: var(--logo); }
+.k-com { color: var(--muted); font-style: italic; }
+.k-num { color: var(--hover); }

@@ -1,27 +1,40 @@
 /*
- * Kongue runs off the main thread.
- *
- * The interpreter is a synchronous tree-walker with no yield point, so a long
- * loop on the main thread freezes the page. Here the main thread can simply
- * terminate us. See kongue_cells.js for the timeout.
+ * Kongue runs off the main thread. The main thread can terminate us when the
+ * script exceeds its time budget.
  */
 var loaded = false;
 
+function errorText(err) {
+  return String((err && (err.message || err.name)) || err || 'unknown error');
+}
+
 self.onmessage = function (e) {
   if (!loaded) {
-    importScripts(e.data.bundle, e.data.glue);
-    loaded = true;
+    try {
+      importScripts(e.data.bundle, e.data.glue);
+      loaded = true;
+    } catch (err) {
+      self.postMessage({
+        ok: false,
+        error: 'Could not load the Kongue browser runtime: ' + errorText(err),
+        output: '',
+        files: {}
+      });
+      return;
+    }
   }
-  var res;
+
   try {
-    res = self.konguePlayground.run(e.data.code, e.data.entry || 'main');
+    if (!self.konguePlayground || !self.konguePlayground.run) {
+      throw new Error('konguePlayground.run is missing after loading the runtime');
+    }
+    self.postMessage(self.konguePlayground.run(e.data.code, e.data.entry || 'main'));
   } catch (err) {
-    res = {
+    self.postMessage({
       ok: false,
-      error: String((err && err.message) || err),
+      error: 'Kongue worker failed: ' + errorText(err),
       output: '',
       files: {}
-    };
+    });
   }
-  self.postMessage(res);
 };
