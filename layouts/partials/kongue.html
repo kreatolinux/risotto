@@ -1,0 +1,12 @@
+{{ if or .Params.kongue (findRE "kongue-cell" .Content) }}
+<link rel="stylesheet" href="{{ "css/kongue.css" | absURL }}">
+<script>
+  window.KONGUE = {
+    bundle: {{ "js/kongue.js" | absURL | jsonify | safeHTML }},
+    glue:   {{ "js/kongue_glue.js" | absURL | jsonify | safeHTML }},
+    worker: {{ "js/kongue_worker.js" | absURL | jsonify | safeHTML }},
+    timeout: 2000
+  };
+</script>
+<script defer src="{{ "js/kongue_cells.js" | absURL }}"></script>
+{{ end }}

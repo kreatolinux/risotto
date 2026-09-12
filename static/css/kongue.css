@@ -1,0 +1,73 @@
+/* Runnable Kongue code cells */
+.kongue-cell {
+  margin: 1.25rem 0;
+  border: 1px solid var(--base02);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--base00);
+}
+.kongue-cell__bar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .35rem .6rem;
+  background: var(--base01);
+  border-bottom: 1px solid var(--base02);
+  font-size: .8rem;
+}
+.kongue-cell__tag {
+  color: var(--base04);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-right: auto;
+}
+.kongue-cell__run, .kongue-cell__edit {
+  font: inherit;
+  cursor: pointer;
+  padding: .2rem .7rem;
+  border-radius: 4px;
+  border: 1px solid var(--base03);
+  background: var(--base02);
+  color: var(--base05);
+}
+.kongue-cell__run:hover, .kongue-cell__edit:hover {
+  border-color: var(--base0D);
+  color: var(--base0D);
+}
+.kongue-cell__run:disabled { cursor: default; opacity: .5; }
+.kongue-cell__status { color: var(--base04); }
+.kongue-cell__status--err { color: var(--base08); }
+.kongue-cell__code, .kongue-cell__input, .kongue-cell__out {
+  margin: 0;
+  padding: .7rem .8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .85rem;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+.kongue-cell__code .highlight { margin: 0; }
+.kongue-cell__code pre { margin: 0; background: transparent !important; }
+.kongue-cell__input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  border: 0;
+  border-top: 1px solid var(--base02);
+  background: var(--base01);
+  color: var(--base05);
+  outline: none;
+}
+.kongue-cell__out {
+  border-top: 1px solid var(--base02);
+  background: var(--base01);
+  color: var(--base0B);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.kongue-cell__out--err { color: var(--base08); }
+.k-kw  { color: var(--base0E); font-weight: 600; }
+.k-str { color: var(--base0A); }
+.k-var { color: var(--base0C); }
+.k-com { color: var(--base03); font-style: italic; }
+.k-num { color: var(--base09); }

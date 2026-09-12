@@ -1,0 +1,12 @@
+{{- /* Fenced ```kongue blocks become runnable cells. */ -}}
+<div class="kongue-cell">
+  <div class="kongue-cell__bar">
+    <span class="kongue-cell__tag">kongue</span>
+    <button class="kongue-cell__run" type="button">&#9654; Run</button>
+    <button class="kongue-cell__edit" type="button">Edit</button>
+    <span class="kongue-cell__status" aria-live="polite"></span>
+  </div>
+  <div class="kongue-cell__code">{{ highlight .Inner "yaml" }}</div>
+  <textarea class="kongue-cell__input" spellcheck="false" hidden>{{ .Inner }}</textarea>
+  <pre class="kongue-cell__out" hidden></pre>
+</div>
