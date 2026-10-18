@@ -13,13 +13,13 @@
             </div>
         </div>
 
-        {{/* Options and defaults follow kreastrap.conf(5) and krep's bundled builder.conf profile. */}}
+        {{/* Options and defaults follow krep's bundled builder.kg profile. */}}
         {{ $layers := slice
-            (dict "key" "Libc" "label" "libc" "options" (slice "glibc" "musl"))
-            (dict "key" "Compiler" "label" "compiler" "options" (slice "gcc" "clang" "no"))
-            (dict "key" "Coreutils" "label" "coreutils" "options" (slice "busybox" "gnu"))
-            (dict "key" "TlsLibrary" "label" "tls" "options" (slice "openssl" "libressl"))
-            (dict "key" "Init" "label" "init" "options" (slice "jumpstart" "systemd"))
+            (dict "key" "libc" "label" "libc" "options" (slice "glibc" "musl"))
+            (dict "key" "compiler" "label" "compiler" "options" (slice "gcc" "clang" "no"))
+            (dict "key" "coreutils" "label" "coreutils" "options" (slice "busybox" "gnu"))
+            (dict "key" "tls_library" "label" "tls" "options" (slice "openssl" "libressl"))
+            (dict "key" "init" "label" "init" "options" (slice "jumpstart" "systemd"))
         }}
         <div class="composer" data-composer>
             <div class="composer__head">Compose your core</div>
@@ -36,10 +36,10 @@
                 </div>
                 {{ end }}
             </div>
-<pre class="composer__conf"><span class="conf-comment"># rootfs.conf</span>
-<span class="conf-section">[Core]</span>
-{{ range $layers }}<span class="conf-key">{{ .key }}</span>=<span class="conf-value" data-conf="{{ .key }}">{{ index .options 0 }}</span>
-{{ end }}<span class="composer__cmd"><span class="prompt">$</span> sudo krep rootfs --configPath="$PWD/rootfs.conf"</span></pre>
+<pre class="composer__conf"><span class="conf-comment"># rootfs.kg</span>
+<span class="conf-key">schema_version</span>: <span class="conf-value">"1"</span>
+{{ range $layers }}<span class="conf-key">{{ .key }}</span>: <span class="conf-value">"<span data-conf="{{ .key }}">{{ index .options 0 }}</span>"</span>
+{{ end }}<span class="composer__cmd"><span class="prompt">$</span> sudo krep rootfs --configPath="$PWD/rootfs.kg"</span></pre>
         </div>
     </section>
 

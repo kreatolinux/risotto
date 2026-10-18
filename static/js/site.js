@@ -1,5 +1,5 @@
 (function() {
-    // Core composer on the home page: one pressed option per layer, mirrored into the rootfs.conf preview.
+    // Core composer on the home page: one pressed option per layer, mirrored into the rootfs.kg preview.
     document.querySelectorAll('[data-composer]').forEach((composer) => {
         composer.addEventListener('click', (e) => {
             const button = e.target.closest('.composer__option');
