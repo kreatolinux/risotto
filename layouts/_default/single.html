@@ -1,25 +1,14 @@
 {{ define "main" }}
-    <header class="content__header">
-        <h1>{{ .Title | markdownify }}</h1>
-    </header>
-    <div class="content__body">
-        {{ .Content }}
-    </div>
-    <footer class="content__footer"></footer>
-{{ end }}
-
-{{define "aside" }}
-    {{ if .Params.description }}<p>{{ .Params.description }}</p>{{ end }}
-    {{ if or (.Params.author) (.Params.date) }}
-        <p>
-            {{ if .Params.author }}By {{ .Params.author }}{{ if .Date }}, {{ end }}{{ end }}
-            {{ if .Date }}{{ .Date.Format "2006-01-02" }}{{ end }}
-        </p>
-    {{ end }}
-
-    {{ if and (.Params.toc) (.TableOfContents) }}
-	    <hr>
-	    On this page:
-	    {{ .TableOfContents }}
-    {{ end }}
+<div class="container container--wide layout layout--article">
+    <article class="layout__main">
+        <h1 class="page-title">{{ .Title | markdownify }}</h1>
+        {{ with .Params.description }}<p class="page-lede">{{ . | markdownify }}</p>{{ end }}
+        {{ if or .Params.author (not .Date.IsZero) }}
+        <p class="page-meta">{{ with .Params.author }}{{ . }} · {{ end }}{{ if not .Date.IsZero }}{{ .Date.Format "2006-01-02" }}{{ end }}</p>
+        {{ end }}
+        <div class="prose">
+            {{ .Content }}
+        </div>
+    </article>
+</div>
 {{ end }}

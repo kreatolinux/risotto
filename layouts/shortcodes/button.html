@@ -1,0 +1,11 @@
+{{/* A call-to-action link styled like the home page buttons.
+     Usage: {{< button href="https://…" icon="download" >}}Label{{< /button >}}
+     Optional: style="ghost" for the outlined variant. */}}
+{{ $style := .Get "style" | default "primary" }}
+<a class="btn btn--{{ $style }}" href="{{ .Get "href" }}">
+    {{- if eq (.Get "icon") "download" }}
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"></path></svg>
+    {{- end }}
+    {{ .Inner }}
+    {{- if eq $style "ghost" }} <span class="btn__arrow" aria-hidden="true">→</span>{{ end }}
+</a>

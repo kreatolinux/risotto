@@ -1,0 +1,16 @@
+{{ define "main" }}
+<div class="container container--wide layout layout--article">
+    <article class="layout__main">
+        <h1 class="page-title">{{ .Title | markdownify }}</h1>
+        {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+        <div class="post-rows blog-list">
+            {{ range .RegularPages.ByDate.Reverse }}
+            <a class="post-row" href="{{ .RelPermalink }}">
+                <span class="post-row__date">{{ .Date.Format "2006-01-02" }}</span>
+                <span class="post-row__title">{{ .Title }}</span>
+            </a>
+            {{ end }}
+        </div>
+    </article>
+</div>
+{{ end }}

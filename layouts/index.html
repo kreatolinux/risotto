@@ -1,4 +1,149 @@
 {{ define "main" }}
-    {{ .Content }}
-{{ end }}
+<div class="home">
+    <section class="container hero">
+        <div class="hero__copy">
+            <h1 class="hero__title">The tinkerer's<br>Linux distribution<span class="cursor">_</span></h1>
+            <p class="hero__lede">An independent Linux distribution built for modularity, simplicity and readable code. There is no base package: you assemble your own system from the parts you choose.</p>
+            <div class="hero__actions">
+                <a class="btn btn--primary" href="{{ "downloads/" | relURL }}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"></path></svg>
+                    Download nightly
+                </a>
+                <a class="btn btn--ghost" href="{{ "docs/handbook/" | relURL }}">Read the handbook <span class="btn__arrow" aria-hidden="true">→</span></a>
+            </div>
+        </div>
 
+        {{/* Options and defaults follow kreastrap.conf(5) and krep's bundled builder.conf profile. */}}
+        {{ $layers := slice
+            (dict "key" "Libc" "label" "libc" "options" (slice "glibc" "musl"))
+            (dict "key" "Compiler" "label" "compiler" "options" (slice "gcc" "clang" "no"))
+            (dict "key" "Coreutils" "label" "coreutils" "options" (slice "busybox" "gnu"))
+            (dict "key" "TlsLibrary" "label" "tls" "options" (slice "openssl" "libressl"))
+            (dict "key" "Init" "label" "init" "options" (slice "jumpstart" "systemd"))
+        }}
+        <div class="composer" data-composer>
+            <div class="composer__head">Compose your core</div>
+            <div class="composer__layers">
+                {{ range $layers }}
+                {{ $key := .key }}
+                <div class="composer__layer">
+                    <span class="composer__label" id="layer-{{ $key }}">{{ .label }}</span>
+                    <div class="composer__options" role="group" aria-labelledby="layer-{{ $key }}">
+                        {{ range $i, $opt := .options }}
+                        <button type="button" class="composer__option" data-layer="{{ $key }}" data-value="{{ $opt }}" aria-pressed="{{ if eq $i 0 }}true{{ else }}false{{ end }}">{{ $opt }}</button>
+                        {{ end }}
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+<pre class="composer__conf"><span class="conf-comment"># rootfs.conf</span>
+<span class="conf-section">[Core]</span>
+{{ range $layers }}<span class="conf-key">{{ .key }}</span>=<span class="conf-value" data-conf="{{ .key }}">{{ index .options 0 }}</span>
+{{ end }}<span class="composer__cmd"><span class="prompt">$</span> sudo krep rootfs --configPath="$PWD/rootfs.conf"</span></pre>
+        </div>
+    </section>
+
+    <div class="tools__rule"></div>
+    <section class="container tools">
+        <h2 class="section-title">Every core tool, written in-house.</h2>
+        <p class="section-lede">A package manager, an init system, a build tool and a DSL, designed to work together, and all written in Nim.</p>
+
+        <div class="tools__grid">
+            <a class="card" href="{{ "docs/manpages/kpkg.8/" | relURL }}">
+                <div class="card__head">
+                    <h3 class="card__title">kpkg</h3>
+                    <span class="card__tag">package manager</span>
+                </div>
+                <p class="card__body">Incredibly feature-packed package manager. Build from source or install binaries. It has a REPL, a modular dependency resolver and atomic operations including rollback.</p>
+                <div class="card__foot">
+                    <div class="snippet"><span class="prompt">$</span> kpkg install flatpak</div>
+                </div>
+            </a>
+
+            <a class="card" href="{{ "docs/manpages/jumpstart_dec.5/" | relURL }}">
+                <div class="card__head">
+                    <h3 class="card__title">Jumpstart</h3>
+                    <span class="card__tag">init system</span>
+                </div>
+                <p class="card__body">Most modular init system to ever exist. Units are Kongue decfiles: more flexible than INI units and safer than shell scripts. Utilizes cores to allow any service to work under it.</p>
+                <div class="card__foot card__note">Prefer systemd or OpenRC? <strong>Use them.</strong></div>
+            </a>
+
+            <a class="card" href="{{ "docs/manpages/krep.8/" | relURL }}">
+                <div class="card__head">
+                    <h3 class="card__title">krep</h3>
+                    <span class="card__tag">repo &amp; image tool</span>
+                </div>
+                <p class="card__body">All you need to create, manage, and maintain Kreato Linux. Includes an ISO generator, a rootfs generator, repository update tools, Kongue linter and more.</p>
+                <div class="card__foot chips">
+                    <span class="chip">rootfs</span>
+                    <span class="chip">iso</span>
+                    <span class="chip">check</span>
+                    <span class="chip">update</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="feature">
+            <div class="feature__copy">
+                <div class="card__head">
+                    <h3 class="card__title">Kongue</h3>
+                    <span class="card__tag">domain-specific language</span>
+                </div>
+                <p class="card__body">One small language behind runfiles, decfiles and more. It is inspired from YAML, sh and HCL. Always improving with more support.</p>
+                <div class="feature__actions">
+                    <a class="btn btn--small" href="{{ "kongue/" | relURL }}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="btn__arrow"><path d="M7 4v16l13-8z"></path></svg>
+                        Open the playground
+                    </a>
+                    <a class="feature__link" href="{{ "docs/manpages/kongue.5/" | relURL }}">kongue(5) →</a>
+                </div>
+            </div>
+            <div class="feature__code">
+<pre class="feature__src"><span class="conf-comment"># variables at the top, functions below</span>
+<span class="conf-key">name</span>: <span class="conf-value">"Kreato Linux"</span>
+
+<span class="conf-section">main</span> {
+    <span class="k-fn">print</span> <span class="conf-value">"Hello, <span class="conf-key">$name</span>!"</span>
+}</pre>
+                <div class="feature__out"><span>→</span> Hello, Kreato Linux!</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container closing">
+        <div class="closing__posts">
+            {{ $blog := site.GetPage "/blog" }}
+            <div class="closing__head">
+                <h2 class="closing__title">From the blog</h2>
+                {{ with $blog }}<a class="closing__more" href="{{ .RelPermalink }}">All posts →</a>{{ end }}
+            </div>
+            {{ with $blog }}
+            <div class="post-rows">
+                {{ range first 3 .RegularPages.ByDate.Reverse }}
+                <a class="post-row" href="{{ .RelPermalink }}">
+                    <span class="post-row__date">{{ .Date.Format "2006-01-02" }}</span>
+                    <span class="post-row__title">{{ .Title }}</span>
+                </a>
+                {{ end }}
+            </div>
+            {{ end }}
+        </div>
+
+        <div class="closing__community">
+            <h2 class="closing__title">Get involved</h2>
+            <div class="community">
+                {{ range site.Params.socialLinks }}
+                <a href="{{ .url }}">
+                    <span>{{ .label | default .title }}</span>
+                    {{ if in .icon "fa-heart" }}<span class="community__icon community__icon--heart" aria-hidden="true">♥</span>{{ else }}<span class="community__icon" aria-hidden="true">↗</span>{{ end }}
+                </a>
+                {{ end }}
+            </div>
+            {{ with site.Params.sponsors }}
+            <p class="sponsors">Supported by {{ range $i, $s := . }}{{ if $i }}, {{ end }}<a href="{{ $s.url }}">{{ $s.name }}</a>{{ end }}.</p>
+            {{ end }}
+        </div>
+    </section>
+</div>
+{{ end }}

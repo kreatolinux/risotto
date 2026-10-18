@@ -1,16 +1,12 @@
 {{ define "main" }}
-    <h1 id="{{ .Title | urlize }}">{{ .Title | markdownify }}</h1>
-
-    {{ .Content }}
-
-    <ul>
-    {{ range .Pages }}
-        {{ .Render "li" }}
-    {{ end }}
-    </ul>
-
-{{ end }}
-
-{{define "aside" }}
-    {{ if .Params.description }}<p>{{ .Params.description }}</p>{{ end }}
+<div class="container container--wide layout layout--article">
+    <article class="layout__main">
+        <h1 class="page-title">{{ .Title | markdownify }}</h1>
+        {{ with .Params.description }}<p class="page-lede">{{ . | markdownify }}</p>{{ end }}
+        <div class="prose">
+            {{ .Content }}
+        </div>
+        {{ partial "child-list.html" . }}
+    </article>
+</div>
 {{ end }}

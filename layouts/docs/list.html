@@ -1,0 +1,15 @@
+{{ define "main" }}
+<div class="container container--wide layout">
+    {{ partial "docs-nav.html" . }}
+    <article class="layout__main">
+        {{ partial "breadcrumb.html" . }}
+        <h1 class="page-title">{{ .Title | markdownify }}</h1>
+        {{ with .Params.description }}<p class="page-lede">{{ . | markdownify }}</p>{{ end }}
+        <div class="prose">
+            {{ .Content }}
+        </div>
+        {{ partial "child-list.html" . }}
+    </article>
+    {{ partial "toc.html" . }}
+</div>
+{{ end }}

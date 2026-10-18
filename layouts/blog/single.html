@@ -1,0 +1,13 @@
+{{ define "main" }}
+<div class="container container--wide layout layout--article">
+    <article class="layout__main">
+        {{ partial "breadcrumb.html" . }}
+        <h1 class="page-title">{{ .Title | markdownify }}</h1>
+        <p class="page-meta">{{ with .Params.author }}{{ . }} · {{ end }}{{ .Date.Format "2 January 2006" }}</p>
+        <div class="prose">
+            {{ .Content }}
+        </div>
+        {{ partial "pager.html" . }}
+    </article>
+</div>
+{{ end }}

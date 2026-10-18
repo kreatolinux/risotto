@@ -5,36 +5,22 @@
         {{- partial "head.html" . -}}
     </head>
 
-    <body{{ if or (eq .Section "package") (eq .Type "package") }} class="package-page"{{ end }}>
-        <div class="page">
+    <body>
+        <div class="page{{ if .IsHome }} page--home{{ end }}">
 
-            <header class="page__header">
-                {{- partial "header.html" . -}}
-            </header>
+            {{- if .IsHome }}{{ partial "home-background.html" . }}{{ end -}}
 
-            <section class="page__body">
+            {{- partial "header.html" . -}}
+
+            <main class="page__main" id="content">
                 {{- block "main" . }}{{- end }}
-            </section>
+            </main>
 
-            <section class="page__aside">
-                <div class="aside__content">
-                    {{- if or (eq .Section "package") (eq .Type "package") }}
-                        {{- block "aside" . }}{{- end }}
-                    {{- else }}
-                        <div class="aside__about">
-                            {{- partial "about.html" . -}}
-                        </div>
-                        <hr>
-                        {{- block "aside" . }}{{- end }}
-                    {{- end }}
-                </div>
-            </section>
-
-            <footer class="page__footer">
-                {{- partial "footer.html" . -}}
-            </footer>
+            {{- partial "footer.html" . -}}
 
         </div>
+        {{- partial "mermaid.html" . -}}
+        {{- partial "kongue.html" . -}}
     </body>
 
 </html>

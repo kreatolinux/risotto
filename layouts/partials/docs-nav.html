@@ -1,0 +1,29 @@
+{{/* Section tree for the documentation. Context: the current page. */}}
+{{ $current := . }}
+{{ $docs := site.GetPage "/docs" }}
+<details class="docs-nav" data-docs-nav open>
+    <summary>Documentation menu <span aria-hidden="true">▾</span></summary>
+    <nav aria-label="Documentation">
+        {{ with $docs }}
+        {{ range .Sections }}
+        <div class="docs-nav__group">
+            <a class="docs-nav__heading{{ if eq $current .}} active{{ end }}" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <ul class="docs-nav__list">
+                {{ range .Pages }}
+                <li>
+                    <a href="{{ .RelPermalink }}"{{ if eq $current . }} class="active" aria-current="page"{{ end }}>{{ .LinkTitle }}</a>
+                    {{ if .IsSection }}
+                    <ul class="docs-nav__list">
+                        {{ range .Pages }}
+                        <li><a href="{{ .RelPermalink }}"{{ if eq $current . }} class="active" aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>
+                        {{ end }}
+                    </ul>
+                    {{ end }}
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+        {{ end }}
+        {{ end }}
+    </nav>
+</details>

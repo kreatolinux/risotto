@@ -52,6 +52,13 @@
         
         container.appendChild(controls);
 
+        // Refit when the graph panel enters or leaves full screen.
+        document.addEventListener('fullscreenchange', () => {
+          panZoom.resize();
+          panZoom.fit();
+          panZoom.center();
+        });
+
         controls.querySelector('.zoom-in').addEventListener('click', () => panZoom.zoomIn());
         controls.querySelector('.zoom-out').addEventListener('click', () => panZoom.zoomOut());
         controls.querySelector('.zoom-reset').addEventListener('click', () => {
@@ -68,11 +75,12 @@
 <style>
   .mermaid {
     position: relative;
-    height: 400px;
+    height: 420px;
+    margin: 18px 0 0;
     overflow: hidden;
-    border: 1px solid var(--inner-bg);
-    margin-bottom: 1rem;
-    background-color: var(--bg);
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--code-bg) radial-gradient(#1f2330 1px, transparent 1px) 0 0 / 20px 20px;
   }
   .mermaid svg {
     height: 100% !important;
@@ -80,30 +88,30 @@
   }
   .mermaid-controls {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
     z-index: 10;
   }
   .mermaid-controls button {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--inner-bg);
-    color: var(--fg);
-    border: 1px solid var(--muted);
+    background: var(--surface);
+    color: var(--text-nav);
+    border: 1px solid var(--line-3);
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.2s;
+    font-size: 13px;
   }
   .mermaid-controls button:hover {
-    background-color: var(--off-bg);
-    color: var(--highlight);
+    border-color: var(--text-faint);
+    color: var(--text-strong);
   }
 </style>
 {{ end }}

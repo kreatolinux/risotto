@@ -1,5 +1,24 @@
-{{- partial "lang.html" . -}}
-{{- partial "mermaid.html" . -}}
-{{- partial "kongue.html" . -}}
-<p class="copyright">{{ .Site.Copyright | markdownify }}</p>
-<p class="advertisement">Powered by <a href="https://gohugo.io/">hugo</a> and <a href="https://github.com/joeroe/risotto">risotto</a>.</p>
+{{ $site := .Site }}
+<footer class="site-footer">
+    <div class="container{{ if not .IsHome }} container--wide{{ end }} site-footer__inner">
+        <div class="site-footer__brand">
+            {{ with $site.Params.logo }}<img src="{{ . | absURL }}" alt="{{ $site.Title }}">{{ end }}
+            {{ with $site.Params.footer.quote }}
+                <p class="site-footer__quote">“{{ .text }}”{{ with .source }}<br>— {{ . }}{{ end }}</p>
+            {{ end }}
+        </div>
+        <nav class="site-footer__nav" aria-label="Footer">
+            {{ range $site.Menus.main }}
+                {{ if hasPrefix .URL "/" }}<a href="{{ .URL | absLangURL }}">{{ .Name }}</a>{{ end }}
+            {{ end }}
+            {{ range $site.Params.socialLinks }}
+                <a href="{{ .url }}">{{ .title }}</a>
+            {{ end }}
+            {{ with $site.Home.OutputFormats.Get "rss" }}<a href="{{ .Permalink }}">rss</a>{{ end }}
+        </nav>
+    </div>
+    <div class="container{{ if not .IsHome }} container--wide{{ end }} site-footer__legal">
+        {{ with $site.Copyright }}<p>{{ . | markdownify }}</p>{{ end }}
+        <p>Linux® is the registered trademark of Linus Torvalds.</p>
+    </div>
+</footer>

@@ -1,0 +1,27 @@
+{{/* Lesson list for the Kongue tour. Context: the current page. */}}
+{{ $current := . }}
+{{ $section := site.GetPage "/kongue" }}
+{{ $index := 0 }}
+{{ range $i, $p := $section.RegularPages.ByWeight }}{{ if eq $p $current }}{{ $index = add $i 1 }}{{ end }}{{ end }}
+<details class="docs-nav kongue-nav" data-docs-nav open>
+    <summary>Lessons <span aria-hidden="true">▾</span></summary>
+    <nav aria-label="Kongue lessons">
+        <div class="docs-nav__group">
+            <a class="docs-nav__heading{{ if eq $current $section }} active{{ end }}" href="{{ $section.RelPermalink }}">Introduction</a>
+        </div>
+        <div class="docs-nav__group">
+            <span class="docs-nav__heading">Lessons</span>
+            <ol class="kongue-nav__list">
+                {{ range $i, $p := $section.RegularPages.ByWeight }}
+                {{ $n := add $i 1 }}
+                <li>
+                    <a href="{{ $p.RelPermalink }}" class="{{ if eq $n $index }}active{{ else if lt $n $index }}done{{ end }}"{{ if eq $n $index }} aria-current="page"{{ end }}>
+                        <span class="kongue-nav__num">{{ printf "%02d" $n }}</span>
+                        <span>{{ $p.Title | markdownify }}</span>
+                    </a>
+                </li>
+                {{ end }}
+            </ol>
+        </div>
+    </nav>
+</details>

@@ -1,0 +1,56 @@
+{{/* Package index: filter, A–Z jump links and packages grouped by first letter. Context: the packages section. */}}
+{{ $pages := .RegularPages.ByTitle }}
+{{ $branch := .Params.branch | default "stable" }}
+{{ $letters := slice }}
+{{ range $pages }}
+    {{ $l := substr .Title 0 1 | lower }}
+    {{ if not (in $letters $l) }}{{ $letters = $letters | append $l }}{{ end }}
+{{ end }}
+<div class="container container--wide pkg-index">
+    <div class="pkg-index__head">
+        <h1 class="page-title">{{ .Title }}</h1>
+        {{ partial "package-branch.html" . }}
+    </div>
+    <p class="page-lede">
+        {{ len $pages }} packages on the <code>{{ $branch }}</code> branch of <a href="https://github.com/kreatolinux/kpkg-repo/tree/{{ $branch }}">kpkg-repo</a>{{ if eq $branch "stable" }}, the default repository{{ else }}, where packages land before they reach stable{{ end }}.
+        Install any of them as a binary, or build it from source. <a href="{{ "docs/handbook/installation/#stable-repositories-vs-master" | relURL }}">Stable vs. master →</a>
+    </p>
+
+    <label class="pkg-search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+        <span class="visually-hidden">Filter packages</span>
+        <input type="search" placeholder="Filter by name or description" autocomplete="off" data-pkg-filter>
+        <kbd aria-hidden="true">/</kbd>
+    </label>
+
+    <nav class="pkg-letters" aria-label="Jump to letter">
+        {{ range split "abcdefghijklmnopqrstuvwxyz" "" }}
+        {{ if in $letters . }}<a href="#letter-{{ . }}">{{ . }}</a>{{ else }}<span aria-hidden="true">{{ . }}</span>{{ end }}
+        {{ end }}
+    </nav>
+
+    <p class="pkg-empty" data-pkg-empty hidden>No packages match that filter.</p>
+
+    {{ range $letters }}
+    {{ $l := . }}
+    {{ $group := slice }}
+    {{ range $pages }}{{ if eq (substr .Title 0 1 | lower) $l }}{{ $group = $group | append . }}{{ end }}{{ end }}
+    <section class="pkg-group" id="letter-{{ $l }}" data-pkg-group>
+        <h2 class="pkg-group__head">{{ $l }} <span>{{ len $group }} package{{ if ne (len $group) 1 }}s{{ end }}</span></h2>
+        <ul class="pkg-grid">
+            {{ range $group }}
+            {{ $desc := index (split (strings.TrimSpace .RawContent) "\n") 0 }}
+            <li data-pkg-card>
+                <a class="pkg-card" href="{{ .RelPermalink }}">
+                    <span class="pkg-card__head">
+                        <span class="pkg-card__name">{{ .Title }}</span>
+                        {{ with findRESubmatch `(?m)^- version (\S+)` .RawContent 1 }}<span class="pill">{{ index (index . 0) 1 }}</span>{{ end }}
+                    </span>
+                    <span class="pkg-card__desc">{{ $desc }}</span>
+                </a>
+            </li>
+            {{ end }}
+        </ul>
+    </section>
+    {{ end }}
+</div>

@@ -1,0 +1,13 @@
+{{ define "main" }}
+<div class="container container--wide layout layout--article">
+    <article class="layout__main">
+        <p class="page-meta">404</p>
+        <h1 class="page-title">Page not found</h1>
+        <p class="page-lede">This page does not exist or has moved.</p>
+        <div class="hero__actions">
+            <a class="btn btn--primary" href="{{ site.BaseURL }}">Back to home</a>
+            <a class="btn btn--ghost" href="{{ "docs/" | relURL }}">Browse the docs</a>
+        </div>
+    </article>
+</div>
+{{ end }}

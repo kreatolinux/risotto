@@ -1,0 +1,23 @@
+{{/*
+    stable/master switch. stable lives at /packages/, master at /packages/master/.
+    Context: a package page or one of the two package sections. On a package page each option
+    links to the same package on that branch and shows its version there.
+*/}}
+{{ $current := .CurrentSection.Params.branch | default "stable" }}
+{{ $isPkg := not .IsSection }}
+{{ $name := .File.ContentBaseName }}
+<nav class="branch-switch" aria-label="Repository branch" data-branch-switch>
+    {{ range slice (dict "name" "stable" "path" "/packages") (dict "name" "master" "path" "/packages/master") }}
+    {{ $target := site.GetPage .path }}
+    {{ if $isPkg }}{{ $target = site.GetPage (printf "%s/%s" .path $name) }}{{ end }}
+    {{ $version := "" }}
+    {{ if and $isPkg $target }}{{ with findRESubmatch `(?m)^- version (\S+)` $target.RawContent 1 }}{{ $version = index (index . 0) 1 }}{{ end }}{{ end }}
+    {{ if eq .name $current }}
+    <span class="branch-switch__opt" aria-current="page">{{ .name }}{{ with $version }} <span class="branch-switch__ver">{{ . }}</span>{{ end }}</span>
+    {{ else if $target }}
+    <a class="branch-switch__opt" href="{{ $target.RelPermalink }}">{{ .name }}{{ with $version }} <span class="branch-switch__ver">{{ . }}</span>{{ end }}</a>
+    {{ else }}
+    <span class="branch-switch__opt branch-switch__opt--missing">not on {{ .name }}</span>
+    {{ end }}
+    {{ end }}
+</nav>

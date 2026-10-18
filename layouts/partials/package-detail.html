@@ -1,0 +1,91 @@
+{{/*
+    One package. krep writes the details as Markdown (description, "- version", dependency links,
+    install commands and a Mermaid graph), so they are read back out of the raw content here.
+    Context: the package page.
+*/}}
+{{ $raw := .RawContent }}
+{{ $name := .Title }}
+{{ $desc := index (split (strings.TrimSpace $raw) "\n") 0 }}
+{{ $replaces := slice }}
+{{ with findRESubmatch `(?m)^- replaces (.+)$` $raw 1 }}
+    {{ range split (index (index . 0) 1) "," }}{{ with strings.TrimSpace . }}{{ $replaces = $replaces | append . }}{{ end }}{{ end }}
+{{ end }}
+{{ $runtime := slice }}
+{{ $build := slice }}
+{{ range findRESubmatch `(?m)^- \[([^\]]+)\]\([^)]*\)( \(build\))?[ \t]*$` $raw }}
+    {{ if index . 2 }}{{ $build = $build | append (index . 1) }}{{ else }}{{ $runtime = $runtime | append (index . 1) }}{{ end }}
+{{ end }}
+{{ $section := .CurrentSection }}
+{{ $branch := $section.Params.branch | default "stable" }}
+
+<div class="container container--wide pkg-detail">
+    <a class="pkg-detail__back" href="{{ $section.RelPermalink }}">← all packages</a>
+    <div class="pkg-detail__title">
+        <h1 class="page-title">{{ $name }}</h1>
+        {{ partial "package-branch.html" . }}
+        {{ if findRE `(?m)^- is a group package` $raw 1 }}<span class="pill pill--large">group</span>{{ end }}
+    </div>
+    {{ with $desc }}<p class="page-lede">{{ . }}</p>{{ end }}
+
+    <div class="pkg-detail__body">
+        <div class="pkg-detail__main">
+            <section class="panel install" aria-labelledby="install-heading" data-install>
+                <div class="panel__bar">
+                    <h2 class="panel__title" id="install-heading">Install</h2>
+                    <div class="install__tabs" role="tablist" aria-label="Install method">
+                        <button type="button" role="tab" id="install-tab-binary" aria-controls="install-binary" aria-selected="true">binary</button>
+                        <button type="button" role="tab" id="install-tab-source" aria-controls="install-source" aria-selected="false" tabindex="-1">source</button>
+                    </div>
+                </div>
+                {{ range slice (dict "id" "binary" "cmd" "install" "hint" "Installs the prebuilt package from the repository.") (dict "id" "source" "cmd" "build" "hint" (printf "Builds %s from source in kpkg's sandbox." $name)) }}
+                <div class="install__panel" role="tabpanel" id="install-{{ .id }}" aria-labelledby="install-tab-{{ .id }}"{{ if eq .id "source" }} hidden{{ end }}>
+                    <div class="install__row">
+                        <code><span class="prompt">$</span> kpkg {{ .cmd }} {{ $name }}</code>
+                        <button type="button" class="panel-btn" data-copy="kpkg {{ .cmd }} {{ $name }}">copy</button>
+                    </div>
+                    <p class="install__hint">{{ .hint }} <a href="{{ "docs/handbook/installation/#binary-vs-source" | relURL }}">Binary vs. source →</a></p>
+                    {{ if eq $branch "master" }}<p class="install__hint">This is the <code>master</code> version. kpkg uses <code>stable</code> unless you change <code>/etc/kpkg/kpkg.conf</code>. <a href="{{ "docs/handbook/installation/#stable-repositories-vs-master" | relURL }}">Stable vs. master →</a></p>{{ end }}
+                </div>
+                {{ end }}
+            </section>
+
+            {{ if or $runtime $build }}
+            <section aria-labelledby="deps-heading">
+                <h2 class="pkg-detail__heading" id="deps-heading">Dependencies</h2>
+                {{ with $runtime }}
+                <h3 class="pkg-detail__label">Runtime</h3>
+                <ul class="dep-chips">
+                    {{ range . }}<li><a href="{{ $section.RelPermalink }}{{ . }}/">{{ . }}</a></li>{{ end }}
+                </ul>
+                {{ end }}
+                {{ with $build }}
+                <h3 class="pkg-detail__label">Build</h3>
+                <ul class="dep-chips dep-chips--build">
+                    {{ range . }}<li><a href="{{ $section.RelPermalink }}{{ . }}/">{{ . }}</a></li>{{ end }}
+                </ul>
+                {{ end }}
+            </section>
+            {{ end }}
+
+            {{ with findRESubmatch "(?s)```mermaid\\n(.*?)```" $raw 1 }}
+            <section class="panel graph" aria-labelledby="graph-heading" data-graph>
+                <div class="panel__bar">
+                    <h2 class="panel__title" id="graph-heading">Dependency graph</h2>
+                    <button type="button" class="panel-btn" data-fullscreen>full screen</button>
+                </div>
+                {{ $.RenderString (printf "```mermaid\n%s```" (index (index . 0) 1)) }}
+            </section>
+            {{ end }}
+        </div>
+
+        <aside class="pkg-detail__side">
+            {{ with $replaces }}
+            <p class="pkg-detail__replaces">Replaces
+                {{ range $i, $r := . }}{{ if $i }}, {{ end }}{{ with $section.GetPage $r }}<a href="{{ .RelPermalink }}">{{ $r }}</a>{{ else }}<code>{{ $r }}</code>{{ end }}{{ end }}
+            </p>
+            {{ end }}
+            <a class="side-link" href="https://github.com/kreatolinux/kpkg-repo/tree/{{ $branch }}/{{ $name }}"><span>View runfile</span><span aria-hidden="true">↗</span></a>
+            <a class="side-link" href="https://github.com/kreatolinux/kpkg-repo/issues"><span>Report a problem</span><span aria-hidden="true">↗</span></a>
+        </aside>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+{{ define "main" }}
+{{ $lessons := .RegularPages.ByWeight }}
+<section class="kongue-hero">
+    <div class="container container--wide kongue-hero__inner">
+        <div class="kongue-hero__copy">
+            <h1 class="kongue-hero__title">{{ .Title }}<span class="cursor">_</span></h1>
+            {{ with .Description }}<p class="kongue-hero__lede">{{ . | markdownify }}</p>{{ end }}
+            <div class="hero__actions">
+                {{ with index $lessons 0 }}<a class="btn btn--primary" href="{{ .RelPermalink }}">Start the tour</a>{{ end }}
+                <a class="btn btn--ghost" href="{{ "docs/manpages/kongue.5/" | relURL }}">kongue(5) <span class="btn__arrow" aria-hidden="true">→</span></a>
+            </div>
+        </div>
+        {{ $code := `# edit me, then press Run
+name: "Kreato Linux"
+
+func greet {
+    print "hello from $name, $1"
+}
+
+main {
+    greet "tinkerer"
+    greet "builder"
+}` }}
+        {{ partial "kongue-cell.html" (dict "code" $code "tag" "playground.kg" "class" "kongue-cell--playground" "autorun" true) }}
+    </div>
+</section>
+
+<div class="container container--wide layout">
+    {{ partial "kongue-nav.html" . }}
+    <article class="layout__main">
+        <div class="prose">
+            {{ .Content }}
+        </div>
+        <ol class="kongue-lessons">
+            {{ range $i, $p := $lessons }}
+            <li>
+                <a href="{{ $p.RelPermalink }}">
+                    <span class="kongue-lessons__num">{{ printf "%02d" (add $i 1) }}</span>
+                    <span class="kongue-lessons__title">{{ $p.Title | markdownify }}</span>
+                </a>
+            </li>
+            {{ end }}
+        </ol>
+    </article>
+</div>
+{{ end }}

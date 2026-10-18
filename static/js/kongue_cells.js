@@ -204,6 +204,9 @@
 
         var editBtn = cell.querySelector('.kongue-cell__edit');
         if (editBtn) editBtn.addEventListener('click', function () { toggleEdit(cell); });
+
+        // The playground shows its output straight away.
+        if (cell.hasAttribute('data-autorun')) runCell(cell);
       })(cells[i]);
     }
   }

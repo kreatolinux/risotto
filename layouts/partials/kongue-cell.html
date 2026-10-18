@@ -1,0 +1,12 @@
+{{- /* A runnable Kongue cell. Context: dict with "code", and optional "tag", "class" and "autorun". */ -}}
+<div class="kongue-cell{{ with .class }} {{ . }}{{ end }}"{{ if .autorun }} data-autorun{{ end }}>
+  <div class="kongue-cell__bar">
+    <span class="kongue-cell__tag">{{ .tag | default "kongue" }}</span>
+    <span class="kongue-cell__status" aria-live="polite"></span>
+    <button class="kongue-cell__edit" type="button">Edit</button>
+    <button class="kongue-cell__run" type="button"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"></path></svg>Run</button>
+  </div>
+  <pre class="kongue-cell__code"><code>{{ .code }}</code></pre>
+  <textarea class="kongue-cell__input" spellcheck="false" aria-label="Kongue source" hidden>{{ .code }}</textarea>
+  <pre class="kongue-cell__out" hidden></pre>
+</div>

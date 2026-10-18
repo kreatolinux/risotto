@@ -1,0 +1,18 @@
+{{/* Previous and next links within the current section. Context: the current page. */}}
+{{ $pages := .CurrentSection.RegularPages }}
+{{ if .IsSection }}{{ $pages = slice }}{{ end }}
+{{ $prev := false }}
+{{ $next := false }}
+{{ $found := false }}
+{{ range $pages }}
+    {{ if $found }}{{ if not $next }}{{ $next = . }}{{ end }}
+    {{ else if eq . $ }}{{ $found = true }}
+    {{ else }}{{ $prev = . }}
+    {{ end }}
+{{ end }}
+{{ if or $prev $next }}
+<nav class="pager" aria-label="Pages in this section">
+    {{ with $prev }}<a href="{{ .RelPermalink }}"><span class="pager__label">← previous</span><span class="pager__title">{{ .LinkTitle }}</span></a>{{ end }}
+    {{ with $next }}<a class="pager__next" href="{{ .RelPermalink }}"><span class="pager__label">next →</span><span class="pager__title">{{ .LinkTitle }}</span></a>{{ end }}
+</nav>
+{{ end }}

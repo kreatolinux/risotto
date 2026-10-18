@@ -1,20 +1,21 @@
-<title>{{ with .Title }}{{ . }} &ndash; {{end}}{{ .Site.Title }}</title>
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} &ndash; {{ end }}{{ .Site.Title }}{{ end }}</title>
 {{ with .Site.Params.about }}<meta name="description" content="{{ .description }}">{{ end }}
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0c10">
 {{ if .Site.Params.noindex }}<meta name="robots" content="noindex" /> {{ end }}
 
-<!-- FontAwesome <https://fontawesome.com/> -->
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+
+<!-- FontAwesome <https://fontawesome.com/>, used by the Mermaid diagram controls -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<!-- Academicons <https://jpswalsh.github.io/academicons/> -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css" integrity="sha512-IW0nhlW5MgNydsXJO40En2EoCkTTjZhI3yuODrZIc8cQ4h1XcF53PsqDHa09NqnkXuIe0Oiyyj171BqZFwISBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-<!-- risotto theme -->
-<link rel="stylesheet" href="{{ printf "css/palettes/%s.css" (.Site.Params.theme.palette | default "base16-dark") | absURL }}">
-<link rel="stylesheet" href="{{ "css/risotto.css" | absURL }}">
-<link rel="stylesheet" href="{{ "css/custom.css" | absURL }}">
+<!-- theme -->
+<link rel="stylesheet" href="{{ "css/kreato.css" | absURL }}">
 
 <!-- favicon -->
 {{ if os.FileExists "static/favicon.ico" }}<link rel="icon" href="{{ "favicon.ico" | absURL }}">{{ end }}
@@ -32,8 +33,9 @@
 <meta property="og:title" content="{{ with .Title }}{{ . }} &ndash; {{end}}{{ .Site.Title }}" />
 <meta property="og:url" content="{{ .Page.Permalink }}" />
 
-<!-- search -->
+<!-- search and page behaviour -->
 <script defer src="{{ "js/search.js" | absURL }}"></script>
+<script defer src="{{ "js/site.js" | absURL }}"></script>
 {{ if isset .Params "description" }}
   <meta property="og:description" content="{{ with .Params.description }}{{ . }} &ndash; {{end}}"/> 
 {{ else }}

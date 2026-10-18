@@ -1,0 +1,8 @@
+{{- /* Callout box. Params: title (optional). The inner text is Markdown. */ -}}
+<aside class="callout callout--warning" role="note">
+    <span class="callout__mark" aria-hidden="true"></span>
+    <div class="callout__body">
+        {{ with .Get "title" }}<p class="callout__title">{{ . }}</p>{{ end }}
+        {{ .Page.RenderString (dict "display" "block") (trim .Inner "\n") }}
+    </div>
+</aside>

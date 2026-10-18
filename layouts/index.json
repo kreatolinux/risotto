@@ -1,5 +1,8 @@
 [
-  {{- range $index, $page := .Site.AllPages -}}
+  {{- /* Search lists each package once, from the default stable branch. */ -}}
+  {{- $pages := slice -}}
+  {{- range .Site.AllPages -}}{{- if not (hasPrefix .RelPermalink "/packages/master/") -}}{{- $pages = $pages | append . -}}{{- end -}}{{- end -}}
+  {{- range $index, $page := $pages -}}
     {{- if $index -}},{{- end -}}
     {{- $content := $page.Plain -}}
     {{- if .Site.Params.search.truncateContent -}}

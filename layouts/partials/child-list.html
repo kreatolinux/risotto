@@ -1,0 +1,13 @@
+{{/* Cards for the pages and subsections of a list page. Context: the current page. */}}
+{{ with .Pages }}
+<ul class="child-list">
+    {{ range . }}
+    <li>
+        <a href="{{ .RelPermalink }}">
+            <div class="child-list__title">{{ .LinkTitle }}</div>
+            {{ with .Description | default .Summary }}<div class="child-list__summary">{{ . | plainify | htmlUnescape }}</div>{{ end }}
+        </a>
+    </li>
+    {{ end }}
+</ul>
+{{ end }}

@@ -1,0 +1,28 @@
+{{ define "main" }}
+{{ $lessons := .CurrentSection.RegularPages.ByWeight }}
+{{ $index := 0 }}
+{{ $prev := false }}
+{{ $next := false }}
+{{ range $i, $p := $lessons }}
+    {{ if eq $p $ }}{{ $index = add $i 1 }}
+    {{ else if not $index }}{{ $prev = $p }}
+    {{ else if not $next }}{{ $next = $p }}
+    {{ end }}
+{{ end }}
+<div class="container container--wide layout">
+    {{ partial "kongue-nav.html" . }}
+    <article class="layout__main">
+        <p class="kongue-lesson__count">lesson {{ printf "%02d" $index }} / {{ len $lessons }}</p>
+        <h1 class="page-title">{{ .Title | markdownify }}</h1>
+        <div class="prose">
+            {{ .Content }}
+        </div>
+        <nav class="pager" aria-label="Lessons">
+            {{ with $prev }}<a href="{{ .RelPermalink }}"><span class="pager__label">← {{ printf "%02d" (sub $index 1) }}</span><span class="pager__title">{{ .Title | markdownify }}</span></a>
+            {{ else }}<a href="{{ $.CurrentSection.RelPermalink }}"><span class="pager__label">← intro</span><span class="pager__title">Introduction</span></a>{{ end }}
+            {{ with $next }}<a class="pager__next" href="{{ .RelPermalink }}"><span class="pager__label">{{ printf "%02d" (add $index 1) }} →</span><span class="pager__title">{{ .Title | markdownify }}</span></a>
+            {{ else }}<a class="pager__next" href="{{ "docs/manpages/kongue.5/" | relURL }}"><span class="pager__label">next →</span><span class="pager__title">The Kongue manual</span></a>{{ end }}
+        </nav>
+    </article>
+</div>
+{{ end }}

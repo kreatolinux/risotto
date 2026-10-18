@@ -1,108 +1,138 @@
-/* Runnable Kongue code cells. Colors come from risotto's semantic theme variables. */
+/* Runnable Kongue code cells. Colors come from the theme's variables in kreato.css. */
 .kongue-cell {
-  margin: 0 0 1.5rem;
-  border: 1px solid var(--inner-bg);
-  background: var(--inner-bg);
+  margin: 24px 0 0;
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--code-bg);
 }
 
 .kongue-cell__bar {
   display: flex;
   align-items: center;
-  gap: .75rem;
-  min-height: 2.25rem;
-  padding: 0 .75rem;
-  background: var(--off-bg);
-  border-bottom: 1px solid var(--inner-bg);
-  color: var(--off-fg);
-  font-size: .875rem;
+  gap: 8px;
+  padding: 8px 8px 8px 18px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
 }
 
 .kongue-cell__tag {
   margin-right: auto;
-  color: var(--muted);
+  color: var(--text-faint);
 }
 
 .kongue-cell__run,
 .kongue-cell__edit {
-  padding: .15rem .6rem;
-  border: 1px solid var(--muted);
-  border-radius: 0;
-  background: var(--inner-bg);
-  color: var(--fg);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line-3);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-nav);
   font: inherit;
   cursor: pointer;
 }
 
-.kongue-cell__run:hover,
-.kongue-cell__edit:hover {
-  background: var(--highlight);
-  border-color: var(--highlight);
+.kongue-cell__edit:hover { border-color: var(--text-faint); color: var(--text-strong); }
+
+.kongue-cell__run {
+  padding: 0 14px;
+  border-color: var(--accent);
+  background: var(--accent);
   color: var(--bg);
+  font-weight: 700;
 }
+
+.kongue-cell__run:hover { filter: brightness(1.08); }
 
 .kongue-cell__run:disabled {
   cursor: default;
   opacity: .5;
 }
 
-.kongue-cell__status { color: var(--muted); }
-.kongue-cell__status--err { color: var(--base08); }
+.kongue-cell__status { color: var(--text-faint); }
+.kongue-cell__status--err { color: var(--red); }
 
-.kongue-cell__code,
-.kongue-cell__input,
-.kongue-cell__out {
+.kongue-cell .kongue-cell__code,
+.kongue-cell .kongue-cell__input,
+.kongue-cell .kongue-cell__out {
   box-sizing: border-box;
   width: 100%;
   margin: 0;
-  padding: 1rem;
+  padding: 18px 22px;
   overflow-x: auto;
-  font-family: var(--font-monospace);
-  font-size: .9rem;
-  line-height: 1.5;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
-.kongue-cell__code {
+.kongue-cell .kongue-cell__code {
   min-height: 3rem;
-  background: var(--inner-bg) !important;
-  color: var(--off-fg) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--text-code) !important;
 }
 
-.kongue-cell__code code {
+.kongue-cell .kongue-cell__code code {
+  padding: 0;
   background: transparent !important;
   color: inherit !important;
+  font-size: inherit;
 }
 
-.kongue-cell__input {
+.kongue-cell .kongue-cell__input {
   display: block;
-  min-height: 8rem;
+  min-height: 10rem;
   resize: vertical;
   border: 0;
-  border-top: 1px solid var(--muted);
   border-radius: 0;
   outline: none;
-  background: var(--off-bg) !important;
-  color: var(--fg) !important;
+  background: var(--code-bg) !important;
+  color: var(--text) !important;
 }
 
+.kongue-cell .kongue-cell__input:focus-visible { box-shadow: inset 0 0 0 1px var(--accent); }
+
 /* The HTML hidden attribute must win over the editor's display rule. */
-.kongue-cell__input[hidden],
-.kongue-cell__out[hidden] {
+.kongue-cell .kongue-cell__input[hidden],
+.kongue-cell .kongue-cell__out[hidden] {
   display: none;
 }
 
-.kongue-cell__out {
-  border-top: 1px solid var(--muted);
-  background: var(--off-bg) !important;
-  color: var(--off-fg) !important;
+.kongue-cell .kongue-cell__out {
+  padding-top: 12px;
+  border: 0 !important;
+  border-top: 1px solid var(--line-2) !important;
+  border-radius: 0 !important;
+  background: var(--bg-sunken) !important;
+  color: var(--text-code) !important;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
-.kongue-cell__out--err { color: var(--base08) !important; }
+/* "● output" label above the result; the dot turns red on errors. */
+.kongue-cell .kongue-cell__out::before {
+  content: "output";
+  display: block;
+  margin-bottom: 6px;
+  padding-left: 15px;
+  background: radial-gradient(circle closest-side, var(--green) 92%, transparent) 0 50% / 7px 7px no-repeat;
+  color: var(--text-faint);
+  font-size: 12px;
+}
 
-/* Kongue token colours, using the same palette as the rest of risotto. */
-.k-kw  { color: var(--link); font-weight: 600; }
-.k-str { color: var(--highlight); }
-.k-var { color: var(--logo); }
-.k-com { color: var(--off-fg); font-style: italic; }
-.k-num { color: var(--hover); }
+.kongue-cell .kongue-cell__out--err { color: var(--red) !important; }
+.kongue-cell .kongue-cell__out--err::before { background-image: radial-gradient(circle closest-side, var(--red) 92%, transparent); }
+
+/* Kongue token colours, using the same palette as the rest of the site. */
+.k-kw  { color: var(--red); font-weight: 600; }
+.k-str { color: var(--green); }
+.k-var { color: var(--steel); }
+.k-com { color: var(--text-faint); font-style: italic; }
+.k-num { color: var(--amber); }

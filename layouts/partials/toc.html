@@ -1,0 +1,15 @@
+{{/* "On this page" column. Context: the current page. */}}
+<aside class="toc">
+    <div class="toc__inner">
+        {{ if and (ne .Params.toc false) (gt (len .Fragments.Headings) 0) }}
+        {{ with .TableOfContents }}
+        <div class="toc__heading">ON THIS PAGE</div>
+        {{ . }}
+        {{ end }}
+        {{ end }}
+        <div class="toc__links">
+            {{ with .File }}<a href="https://github.com/kreatolinux/linux.krea.to/edit/master/content/{{ .Path }}">Edit on GitHub ↗</a>{{ end }}
+            {{ range site.Params.socialLinks }}{{ if eq .icon "fa-brands fa-discord" }}<a href="{{ .url }}">Ask on Discord ↗</a>{{ end }}{{ end }}
+        </div>
+    </div>
+</aside>
