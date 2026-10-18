@@ -43,5 +43,5 @@
     <meta property="og:description" content="{{ .description }}"/> 
   {{ end }}
 {{ end }}
-{{ with .Site.LanguageCode}}<meta property="og:locale" content="{{ . }}" />{{ end }}
+{{ with site.Language.Locale }}<meta property="og:locale" content="{{ . }}" />{{ end }}
 {{ with .Site.Params.about }}<meta property="og:image" content="{{ with .logo_image }}{{ . | absURL }}{{ end }}" />{{ end }}
